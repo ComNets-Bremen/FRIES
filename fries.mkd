@@ -1,0 +1,231 @@
+---
+title: Student-FRIEndly extension to the TCP/IP protocol Suite
+abbrev: FRIES
+docname: draft-kuladinithi-fries-00
+date: 2021-04-01
+category: info
+
+ipr: trust200902
+area: General
+workgroup: FRIES Working Group
+keyword: Internet-Draft
+
+stand_alone: yes
+pi: [toc, sortrefs, symrefs]
+
+author:
+ -
+    ins: K. Kuladinithi
+    name: Koojana Kuladinithi
+    organization: Hamburg University of Technology
+    street: Am Schwarzenberg-Campus 3
+    city: Hamburg
+    code: 21073
+    country: Germany
+    phone: +49-40-428-783533
+    email: koojana.kuladinithi@tuhh.de
+ -
+    ins: A. Udugama
+    name: Asanga Udugama
+    org: University of Bremen
+    street: Otto-Hahn-Allee 1
+    city: Bremen
+    code: D-28359
+    country: Germany
+    phone: +49-421-218-62378
+    email: udugama@uni-bremen.de
+
+normative:
+  RFC2474:
+  RFC3168:
+  RFC8200:
+  RFC0791:
+  RFC0793:
+
+informative:
+
+
+--- abstract
+
+Protocols of the TCP/IP protocol suite were designed solely to adapt to the technical changes in networks and devices, leaving out users’ feelings. COVID-19 pandemic has shown us the necessity of including mechanisms in TCP/IP to support the context-sensitive human thought process, especially to serve pupils and students. This memo describes the student-FRIEndly TCP/IP protocol Suite (FRIES) that caters to the quick adaptation of TCP/IP to serve students in a virtual context. This mode of operation should not be used in physically present meetings (e.g., lectures or oral examinations), as the protocol behavior does not match with the actual activities or expressions.
+
+FRIES is a highly deployable protocol extension, maintaining backward compatibility with the current TCP/IP stack.
+
+--- middle
+
+Introduction        {#problems}
+============
+
+
+The COVID-19 pandemic has forced humans, especially the young generations, to use the Internet in ways it was not intended to be used. For example, the use of on-line lectures at universities for lengthy periods of time, without any social interactions. This demotivates students. Interactions with students have shown us that a life with no social interactions, sitting in front of a computer all day, without any banter with friends in a physical setting has negatively affected the younger generations' appetite for education.
+
+The FRIES extension introduces some novel features to the current TCP/IP stack to serve diverse behavior patterns (physical or mental) of users by manipulating the protocol behavior to serve users' feelings. Sometimes, students do not want to attire appropriately or be prepared to engage in lectures. Students prefer to listen only to some keywords from the lecture, while lounging on the bed and even, playing on-line games. When they are asked to talk or join a breakout room discussion, students pretend wanting to talk even without any clue of what to say.
+
+Therefore, the TCP/IP protocol suite MUST support mechanisms to handle the following behavioral patterns irrespective of the underline network changes.
+
+ - Delayed joining of on-line lectures
+ - Enabling intermittent disruptions to appear as having connectivity problems (e.g., when using a shared white-board application)
+ - Introduce artificial artefacts (audio/video) when no proper answers can be given
+ - Seamless handover of active on-line lectures between multiple devices to enable home furniture carousel/musical chairs
+
+This document specifies the use of new and existing protocol features to describe the FRIES extension to the TCP/IP protocol suite, to implement student-friendly virtual communications. All the features proposed MUST be incorporated in both IPv4 and IPv6 networks.
+
+
+The Need for Standardization   {#need}
+----------------------------
+
+Our lives have been turned upside down in many areas, including education, due to the never-ending pandemic that started at the beginning of 2020. Everyone now recognizes the seriousness of the impact of the pandemic. Therefore, it is imperative that standardization bodies among others, move quickly to adopt new standards to accommodate features that make life livable during a pandemic.
+
+The FRIES extension primarily focuses on our future generation to survive and enjoy their education.
+
+The automatic detection of the students’ thought process or intentions to enable the expected behavioral pattern is beyond the scope of this document. A possibility is the use of machine learning techniques to recognize facial expressions and environmental conditions.
+
+
+Operation   {#ops}
+=========
+
+General
+-------
+
+Pandemic friendliness of the TCP/IP protocol suite is defined by introducing the pandemic bit to the IP header and the TCP header. Backward compatibility of the existing TCP/IP protocols is kept intact when P bit is not set.
+
+~~~~~~~~~~
+       0   1   2   3
+      +---+---+---+---+
+      | P | Version   |
+      +---+---+---+---+
+~~~~~~~~~~
+{: #figipheader title="Pandemic bit in IP Header - Version field"}
+
+The most significant bit, MSB of the Version field of both IPv4 {{RFC0791}} and IPv6 {{RFC8200}} header MUST be modified to handle the pandemic situation. The pandemic bit is defined as the P bit, see {{figipheader}}. As the current IP version field is used to represent only number 4 and 6, the use of the left most bit as the pandemic bit results in no major changes to the existing IP header.
+
+~~~~~~~~~~
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Data | |   |N|C|E|U|A|P|R|S|F|                               |
+| Offset|P|Res|S|W|C|R|C|S|S|Y|I|            Window             |
+|       | |   | |R|E|G|K|H|T|N|N|                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+~~~~~~~~~~
+{: #figtcpheader title="Pandemic bit in TCP Header - Reserved flags"}
+
+The MSB of the Reserved flags of TCP header {{RFC0793}} SHALL also be modified to indicate the pandemic situation, see {{figtcpheader}}. Setting the P bit to 0 means business-as-usual with TCP/IP operations.
+
+Setting P bit to 1 enables FRIES extensions for TCP/IP. Any entity (e.g., applications, routers) which encounters packets with the P bit set SHALL support some or all of the behavioral patterns described in {{problems}}.
+
+The following sections describe how the extensions MUST operate on routers, end-hosts and how seamless handovers are performed.
+
+
+Operation on Routers {#routers}
+--------------------
+
+This section describes how a router MUST behave when there is a pandemic. {{figdscp}} shows the common format of the TOS field of IPv4 and the Traffic Class field of IPv6, as defined in {{RFC2474}} and {{RFC3168}}, which are requested to assist the router during a pandemic.
+
+~~~~~~~~~~
+        0   1   2   3   4   5   6   7
+      +---+---+---+---+---+---+---+---+
+      |  DS FIELD, DSCP       | ECN   |
+      +---+---+---+---+---+---+---+---+
+
+     DSCP: differentiated services code point
+     ECN:  Explicit Congestion Notification
+
+   During the pandemic: DSCP = 000000 and ECN = 00 or 01 or 10
+
+~~~~~~~~~~
+{: #figdscp title="The Differentiated Services and ECN Fields in IP"}
+
+When P bit is set in the IP Version field, the routers treat all pandemic packets as follows.
+
+- When dropping application packets is enabled for a certain period, the IP header of the packets generated during the mentioned period should be set by the originating host as follows:
+  1. P bit MUST be set to 1 in the IP Version field
+  2. DSCP MUST be set as best-effort traffic only, six most significant (left-most) bits to 000000, see {{figdscp}}.
+  3. ECN MAY be set to indicate the Code Points as defined in {{RFC3168}}.
+
+- If the P bit of the IP header is set, routers MUST treat this packet without any prioritization and start dropping the packets randomly, irrespective of the ECN values. When there is no pandemic, the routers shall treat the DSCP values as defined in {{RFC2474}}. For example, audio and video packets get higher priority at router's queue while keeping the drop probability to a minimum or none.
+
+- If ECN is set to 01 or 10, the router shall indicate the explicit network congestion as defined in {{RFC3168}} irrespective of the P bit is set or not. It is recommended to set ECN to 00 during a pandemic as the artificial dropping of packets at a router is more efficient compared to the use of explicit congestion notification to the end hosts.
+
+- The dropping policy at the router is implementation-specific.
+
+- At least the last hop router MUST implement the dropping of packets randomly if the P bit is set.  The routers may identify whether it's the last hop router or not by comparing the Subnet Prefix of the destination IP address.
+
+- Other routers may also implement the dropping of packets to handle pandemic situation, depending on the seriousness level. The identification of a number of routers that may drop packets is out of the scope of this document.
+
+
+
+Operation on End-hosts {#endhosts}
+----------------------
+
+TCP congestion and flow control mechanisms are kept intact during the pandemic. However, enabling the P bit in TCP header results in following extensions.
+
+- If the P bit is set in both IP and TCP header, the TCP receiver shall ignore  in order packet delivery to the application. This is indicated to the TCP receiver by setting the P bit to 1 and PSH flag to 1 by the TCP sender. TCP receiver MUST forward the packet to the application without any delay. Some of the lost packets may not be recovered at all depending on the dropping policy implemented at the last hop router due to the pandemic.
+
+- The delivery of out of order packets may result in artefacts in the applications, as the TCP does not perform reliably due to the pandemic.
+
+- If a student decides only to listen, mimicking serious network issues, FRIES protocol shall use the beauty of TCP half connection close feature, showing a frozen connection state of the student's state on the TCP receiver. The TCP sender (e.g., the student's laptop) shall send FIN message with the P bit set to the TCP receiver even though it continues to receive the application packets.
+
+- At the receipt of FIN message with the P bit set, the TCP receiver knows that this is a request for abrupt termination due to the pandemic.
+
+- Not accepting application packets, without creating TCP segments at the TCP sender, shall be allowed at the transport layer during a pandemic. The acceptance policy at the transport layer is implementation-specific.
+
+
+Enabling Seamless Handovers {#handover}
+---------------------------
+
+This operation is valid only for the local network in case a student intends to perform furniture carousel/musical chairs to overcome the monotonous nature of lectures. Considering that a student wishes to use multiple devices at different places (see {{fignapt}}), then the student SHALL switch on all devices at the start for the home router to perform furniture carousel/musical chairs.
+
+
+~~~~~~~~~~
+                         +---------------+
+                         |  Local Router |
+                         +---------------+
+                                |
+                                |  LAN
+     -----------------------------------------------------------
+            |                   |                       |
+            |                   |                       |
+          +--+                 +--+                    +--+
+          |--|                 |--|                    |--|
+         /____\               /____\                  /____\
+ (Tablet, having meal   (TV Screen, while      (Desktop PC, when
+  @ kitchen)             relaxing on the sofa   teaching is exciting
+                         @ living room)         @ study table)
+~~~~~~~~~~
+{: #fignapt title="An example of enabling home furniture carousel/musical chairs"}
+
+- Switching on all devices results in registering the relevant devices at the home router.
+- Home router multicasts incoming packets to all the registered devices.
+- The home router MUST maintain a pandemic table which shows the list of active devices indicating the primary device and cost metrics to manage the bandwidth usage depending on a student's concentration level (e.g., when at kitchen, home router MAY reduce the amount of incoming packets forwarded as the student is anyway not focused).
+
+
+
+
+
+Terminology          {#Terminology}
+-----------
+{::boilerplate bcp14}
+
+
+IANA Considerations
+===================
+
+If this work is standardized, IANA is kindly requested to introduce the Pandemic bit in IPv4, IPv6 and TCP headers.
+
+
+
+Security Considerations
+=======================
+
+Security is considered unimportant as the FRIES extension is solely designed for the use of students.
+
+
+
+Acknowledgement
+===============
+
+COVID-19 pandemic let us have more evening walks together compared to the time before. This RFC is a result of these walks and therefore we are grateful for COVID-19 for allowing us to think out of the box.
+
+
+
+--- back
