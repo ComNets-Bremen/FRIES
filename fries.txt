@@ -1,0 +1,504 @@
+
+
+
+
+FRIES Working Group                                       K. Kuladinithi
+Internet-Draft                          Hamburg University of Technology
+Intended status: Informational                                A. Udugama
+Expires: October 3, 2021                            University of Bremen
+                                                          April 01, 2021
+
+
+        Student-FRIEndly extension to the TCP/IP protocol Suite
+                       draft-kuladinithi-fries-00
+
+Abstract
+
+   Protocols of the TCP/IP protocol suite were designed solely to adapt
+   to the technical changes in networks and devices, leaving out users'
+   feelings.  COVID-19 pandemic has shown us the necessity of including
+   mechanisms in TCP/IP to support the context-sensitive human thought
+   process, especially to serve pupils and students.  This memo
+   describes the student-FRIEndly TCP/IP protocol Suite (FRIES) that
+   caters to the quick adaptation of TCP/IP to serve students in a
+   virtual context.  This mode of operation should not be used in
+   physically present meetings (e.g., lectures or oral examinations), as
+   the protocol behavior does not match with the actual activities or
+   expressions.
+
+   FRIES is a highly deployable protocol extension, maintaining backward
+   compatibility with the current TCP/IP stack.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on October 3, 2021.
+
+
+
+
+
+
+
+
+Kuladinithi & Udugama    Expires October 3, 2021                [Page 1]
+
+Internet-Draft                    FRIES                       April 2021
+
+
+Copyright Notice
+
+   Copyright (c) 2021 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (https://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+     1.1.  The Need for Standardization  . . . . . . . . . . . . . .   3
+   2.  Operation . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     2.1.  General . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     2.2.  Operation on Routers  . . . . . . . . . . . . . . . . . .   4
+     2.3.  Operation on End-hosts  . . . . . . . . . . . . . . . . .   6
+     2.4.  Enabling Seamless Handovers . . . . . . . . . . . . . . .   7
+     2.5.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   7
+   3.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
+   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
+   5.  Acknowledgement . . . . . . . . . . . . . . . . . . . . . . .   8
+   6.  Normative References  . . . . . . . . . . . . . . . . . . . .   8
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
+
+1.  Introduction
+
+   The COVID-19 pandemic has forced humans, especially the young
+   generations, to use the Internet in ways it was not intended to be
+   used.  For example, the use of on-line lectures at universities for
+   lengthy periods of time, without any social interactions.  This
+   demotivates students.  Interactions with students have shown us that
+   a life with no social interactions, sitting in front of a computer
+   all day, without any banter with friends in a physical setting has
+   negatively affected the younger generations' appetite for education.
+
+   The FRIES extension introduces some novel features to the current
+   TCP/IP stack to serve diverse behavior patterns (physical or mental)
+   of users by manipulating the protocol behavior to serve users'
+   feelings.  Sometimes, students do not want to attire appropriately or
+   be prepared to engage in lectures.  Students prefer to listen only to
+   some keywords from the lecture, while lounging on the bed and even,
+
+
+
+Kuladinithi & Udugama    Expires October 3, 2021                [Page 2]
+
+Internet-Draft                    FRIES                       April 2021
+
+
+   playing on-line games.  When they are asked to talk or join a
+   breakout room discussion, students pretend wanting to talk even
+   without any clue of what to say.
+
+   Therefore, the TCP/IP protocol suite MUST support mechanisms to
+   handle the following behavioral patterns irrespective of the
+   underline network changes.
+
+   o  Delayed joining of on-line lectures
+
+   o  Enabling intermittent disruptions to appear as having connectivity
+      problems (e.g., when using a shared white-board application)
+
+   o  Introduce artificial artefacts (audio/video) when no proper
+      answers can be given
+
+   o  Seamless handover of active on-line lectures between multiple
+      devices to enable home furniture carousel/musical chairs
+
+   This document specifies the use of new and existing protocol features
+   to describe the FRIES extension to the TCP/IP protocol suite, to
+   implement student-friendly virtual communications.  All the features
+   proposed MUST be incorporated in both IPv4 and IPv6 networks.
+
+1.1.  The Need for Standardization
+
+   Our lives have been turned upside down in many areas, including
+   education, due to the never-ending pandemic that started at the
+   beginning of 2020.  Everyone now recognizes the seriousness of the
+   impact of the pandemic.  Therefore, it is imperative that
+   standardization bodies among others, move quickly to adopt new
+   standards to accommodate features that make life livable during a
+   pandemic.
+
+   The FRIES extension primarily focuses on our future generation to
+   survive and enjoy their education.
+
+   The automatic detection of the students' thought process or
+   intentions to enable the expected behavioral pattern is beyond the
+   scope of this document.  A possibility is the use of machine learning
+   techniques to recognize facial expressions and environmental
+   conditions.
+
+2.  Operation
+
+
+
+
+
+
+
+Kuladinithi & Udugama    Expires October 3, 2021                [Page 3]
+
+Internet-Draft                    FRIES                       April 2021
+
+
+2.1.  General
+
+   Pandemic friendliness of the TCP/IP protocol suite is defined by
+   introducing the pandemic bit to the IP header and the TCP header.
+   Backward compatibility of the existing TCP/IP protocols is kept
+   intact when P bit is not set.
+
+          0   1   2   3
+         +---+---+---+---+
+         | P | Version   |
+         +---+---+---+---+
+
+            Figure 1: Pandemic bit in IP Header - Version field
+
+   The most significant bit, MSB of the Version field of both IPv4
+   [RFC0791] and IPv6 [RFC8200] header MUST be modified to handle the
+   pandemic situation.  The pandemic bit is defined as the P bit, see
+   Figure 1.  As the current IP version field is used to represent only
+   number 4 and 6, the use of the left most bit as the pandemic bit
+   results in no major changes to the existing IP header.
+
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  Data | |   |N|C|E|U|A|P|R|S|F|                               |
+   | Offset|P|Res|S|W|C|R|C|S|S|Y|I|            Window             |
+   |       | |   | |R|E|G|K|H|T|N|N|                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+           Figure 2: Pandemic bit in TCP Header - Reserved flags
+
+   The MSB of the Reserved flags of TCP header [RFC0793] SHALL also be
+   modified to indicate the pandemic situation, see Figure 2.  Setting
+   the P bit to 0 means business-as-usual with TCP/IP operations.
+
+   Setting P bit to 1 enables FRIES extensions for TCP/IP.  Any entity
+   (e.g., applications, routers) which encounters packets with the P bit
+   set SHALL support some or all of the behavioral patterns described in
+   Section 1.
+
+   The following sections describe how the extensions MUST operate on
+   routers, end-hosts and how seamless handovers are performed.
+
+2.2.  Operation on Routers
+
+   This section describes how a router MUST behave when there is a
+   pandemic.  Figure 3 shows the common format of the TOS field of IPv4
+   and the Traffic Class field of IPv6, as defined in [RFC2474] and
+
+
+
+
+Kuladinithi & Udugama    Expires October 3, 2021                [Page 4]
+
+Internet-Draft                    FRIES                       April 2021
+
+
+   [RFC3168], which are requested to assist the router during a
+   pandemic.
+
+           0   1   2   3   4   5   6   7
+         +---+---+---+---+---+---+---+---+
+         |  DS FIELD, DSCP       | ECN   |
+         +---+---+---+---+---+---+---+---+
+
+        DSCP: differentiated services code point
+        ECN:  Explicit Congestion Notification
+
+      During the pandemic: DSCP = 000000 and ECN = 00 or 01 or 10
+
+
+        Figure 3: The Differentiated Services and ECN Fields in IP
+
+   When P bit is set in the IP Version field, the routers treat all
+   pandemic packets as follows.
+
+   o  When dropping application packets is enabled for a certain period,
+      the IP header of the packets generated during the mentioned period
+      should be set by the originating host as follows:
+
+      1.  P bit MUST be set to 1 in the IP Version field
+
+      2.  DSCP MUST be set as best-effort traffic only, six most
+          significant (left-most) bits to 000000, see Figure 3.
+
+      3.  ECN MAY be set to indicate the Code Points as defined in
+          [RFC3168].
+
+   o  If the P bit of the IP header is set, routers MUST treat this
+      packet without any prioritization and start dropping the packets
+      randomly, irrespective of the ECN values.  When there is no
+      pandemic, the routers shall treat the DSCP values as defined in
+      [RFC2474].  For example, audio and video packets get higher
+      priority at router's queue while keeping the drop probability to a
+      minimum or none.
+
+   o  If ECN is set to 01 or 10, the router shall indicate the explicit
+      network congestion as defined in [RFC3168] irrespective of the P
+      bit is set or not.  It is recommended to set ECN to 00 during a
+      pandemic as the artificial dropping of packets at a router is more
+      efficient compared to the use of explicit congestion notification
+      to the end hosts.
+
+   o  The dropping policy at the router is implementation-specific.
+
+
+
+
+Kuladinithi & Udugama    Expires October 3, 2021                [Page 5]
+
+Internet-Draft                    FRIES                       April 2021
+
+
+   o  At least the last hop router MUST implement the dropping of
+      packets randomly if the P bit is set.  The routers may identify
+      whether it's the last hop router or not by comparing the Subnet
+      Prefix of the destination IP address.
+
+   o  Other routers may also implement the dropping of packets to handle
+      pandemic situation, depending on the seriousness level.  The
+      identification of a number of routers that may drop packets is out
+      of the scope of this document.
+
+2.3.  Operation on End-hosts
+
+   TCP congestion and flow control mechanisms are kept intact during the
+   pandemic.  However, enabling the P bit in TCP header results in
+   following extensions.
+
+   o  If the P bit is set in both IP and TCP header, the TCP receiver
+      shall ignore in order packet delivery to the application.  This is
+      indicated to the TCP receiver by setting the P bit to 1 and PSH
+      flag to 1 by the TCP sender.  TCP receiver MUST forward the packet
+      to the application without any delay.  Some of the lost packets
+      may not be recovered at all depending on the dropping policy
+      implemented at the last hop router due to the pandemic.
+
+   o  The delivery of out of order packets may result in artefacts in
+      the applications, as the TCP does not perform reliably due to the
+      pandemic.
+
+   o  If a student decides only to listen, mimicking serious network
+      issues, FRIES protocol shall use the beauty of TCP half connection
+      close feature, showing a frozen connection state of the student's
+      state on the TCP receiver.  The TCP sender (e.g., the student's
+      laptop) shall send FIN message with the P bit set to the TCP
+      receiver even though it continues to receive the application
+      packets.
+
+   o  At the receipt of FIN message with the P bit set, the TCP receiver
+      knows that this is a request for abrupt termination due to the
+      pandemic.
+
+   o  Not accepting application packets, without creating TCP segments
+      at the TCP sender, shall be allowed at the transport layer during
+      a pandemic.  The acceptance policy at the transport layer is
+      implementation-specific.
+
+
+
+
+
+
+
+Kuladinithi & Udugama    Expires October 3, 2021                [Page 6]
+
+Internet-Draft                    FRIES                       April 2021
+
+
+2.4.  Enabling Seamless Handovers
+
+   This operation is valid only for the local network in case a student
+   intends to perform furniture carousel/musical chairs to overcome the
+   monotonous nature of lectures.  Considering that a student wishes to
+   use multiple devices at different places (see Figure 4), then the
+   student SHALL switch on all devices at the start for the home router
+   to perform furniture carousel/musical chairs.
+
+                            +---------------+
+                            |  Local Router |
+                            +---------------+
+                                   |
+                                   |  LAN
+        -----------------------------------------------------------
+               |                   |                       |
+               |                   |                       |
+             +--+                 +--+                    +--+
+             |--|                 |--|                    |--|
+            /____\               /____\                  /____\
+    (Tablet, having meal   (TV Screen, while      (Desktop PC, when
+     @ kitchen)             relaxing on the sofa   teaching is exciting
+                            @ living room)         @ study table)
+
+     Figure 4: An example of enabling home furniture carousel/musical
+                                  chairs
+
+   o  Switching on all devices results in registering the relevant
+      devices at the home router.
+
+   o  Home router multicasts incoming packets to all the registered
+      devices.
+
+   o  The home router MUST maintain a pandemic table which shows the
+      list of active devices indicating the primary device and cost
+      metrics to manage the bandwidth usage depending on a student's
+      concentration level (e.g., when at kitchen, home router MAY reduce
+      the amount of incoming packets forwarded as the student is anyway
+      not focused).
+
+2.5.  Terminology
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+
+
+
+Kuladinithi & Udugama    Expires October 3, 2021                [Page 7]
+
+Internet-Draft                    FRIES                       April 2021
+
+
+3.  IANA Considerations
+
+   If this work is standardized, IANA is kindly requested to introduce
+   the Pandemic bit in IPv4, IPv6 and TCP headers.
+
+4.  Security Considerations
+
+   Security is considered unimportant as the FRIES extension is solely
+   designed for the use of students.
+
+5.  Acknowledgement
+
+   COVID-19 pandemic let us have more evening walks together compared to
+   the time before.  This RFC is a result of these walks and therefore
+   we are grateful for COVID-19 for allowing us to think out of the box.
+
+6.  Normative References
+
+   [RFC0791]  Postel, J., "Internet Protocol", STD 5, RFC 791,
+              DOI 10.17487/RFC0791, September 1981,
+              <https://www.rfc-editor.org/info/rfc791>.
+
+   [RFC0793]  Postel, J., "Transmission Control Protocol", STD 7,
+              RFC 793, DOI 10.17487/RFC0793, September 1981,
+              <https://www.rfc-editor.org/info/rfc793>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC2474]  Nichols, K., Blake, S., Baker, F., and D. Black,
+              "Definition of the Differentiated Services Field (DS
+              Field) in the IPv4 and IPv6 Headers", RFC 2474,
+              DOI 10.17487/RFC2474, December 1998,
+              <https://www.rfc-editor.org/info/rfc2474>.
+
+   [RFC3168]  Ramakrishnan, K., Floyd, S., and D. Black, "The Addition
+              of Explicit Congestion Notification (ECN) to IP",
+              RFC 3168, DOI 10.17487/RFC3168, September 2001,
+              <https://www.rfc-editor.org/info/rfc3168>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+
+
+
+
+
+Kuladinithi & Udugama    Expires October 3, 2021                [Page 8]
+
+Internet-Draft                    FRIES                       April 2021
+
+
+   [RFC8200]  Deering, S. and R. Hinden, "Internet Protocol, Version 6
+              (IPv6) Specification", STD 86, RFC 8200,
+              DOI 10.17487/RFC8200, July 2017,
+              <https://www.rfc-editor.org/info/rfc8200>.
+
+Authors' Addresses
+
+   Koojana Kuladinithi
+   Hamburg University of Technology
+   Am Schwarzenberg-Campus 3
+   Hamburg  21073
+   Germany
+
+   Phone: +49-40-428-783533
+   Email: koojana.kuladinithi@tuhh.de
+
+
+   Asanga Udugama
+   University of Bremen
+   Otto-Hahn-Allee 1
+   Bremen  D-28359
+   Germany
+
+   Phone: +49-421-218-62378
+   Email: udugama@uni-bremen.de
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Kuladinithi & Udugama    Expires October 3, 2021                [Page 9]
